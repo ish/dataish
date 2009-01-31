@@ -3,7 +3,7 @@ import logging as log
 
 log.basicConfig(level=log.DEBUG,)
 
-def _wrapif(value):
+def _wrapif(self, value):
     if isinstance(value, dict):
         log.debug('.. Wrapper(%r)'%value)
         return Wrapper(value)
@@ -15,11 +15,11 @@ def _wrapif(value):
 class Wrapper(dict):
 
     def __getattr__(self, key):
-        log.debug('__getattr__(self, %r)'%key)
+        log.debug('__getattr__(%r)'%key)
 
         try:
             v = self[key]
-            log.debug('return self._wrapif(%r)'%key)
+            log.debug('return self[%r]'%key)
             return v
         except KeyError:
             try:
@@ -42,7 +42,7 @@ class Wrapper(dict):
     def __getitem__(self, key):
         item = dict.__getitem__(self, key)
         log.debug('Wrapper.__getitem__(%r)'%key)
-        return _wrapif(item)
+        return self._wrapif(item)
 
     def items(self):
         log.debug('items()')
@@ -72,6 +72,9 @@ class Wrapper(dict):
         del self[key]
         return (key, v)
 
+    def _wrapif(self, value):
+        return _wrapif(self, value)
+
 
         
 
@@ -82,12 +85,17 @@ class ListWrapper(list):
     def __getitem__(self, key):
         log.debug('ListWrapper.__getitem__(self, %r)'%key)
         item = list.__getitem__(self, key)
-        return _wrapif(item)
+        return self._wrapif(item)
 
     def __iter__(self):
         for item in list.__iter__(self):
-            yield _wrapif(item)
-
+            yield self._wrapif(item)
 
     def __repr__(self):
         return '❲%s❳'%(', '.join('%r'%value for value in self))
+
+    def _wrapif(self, value):
+        return _wrapif(self, value)
+
+
+
