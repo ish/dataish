@@ -4,13 +4,27 @@ from dataish.core import wrapper
 
 log.basicConfig(level=log.INFO)
 
+def _get_sub_schema_by_key(schema, key):
+    try:
+        int(key)
+        log.debug('trying to get key %s on %s'%(key, schema))
+        log.debug('returning schema.attr, %r'%schema.attr)
+        return schema.attr
+    except ValueError:
+        log.debug('**',key)
+        log.debug('returning schema.get(\'%s\'), %r'%(key, schema.get(key)))
+        return schema.get(key)
+
+
 def _wrapif(self, key, value):
+    log.debug('schema, key', self.schema, key, value)
+    schema = _get_sub_schema_by_key(self.schema, key)
     if isinstance(value, dict):
-        log.debug('.. sWrapper(%r)'%value)
-        return Wrapper(value, self.schema)
+        log.debug('.. sWrapper(%r), %r'%(value, schema))
+        return Wrapper(value, schema)
     if isinstance(value, list):
-        log.debug('.. sListWrapper(%r), %s'%(value,self.schema))
-        return ListWrapper(value, self.schema)
+        log.debug('.. sListWrapper(%r), %s'%(value, schema))
+        return ListWrapper(value, schema)
     return value
 
 class Wrapper(wrapper.Wrapper):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging as log
 
-log.basicConfig(level=log.INFO,)
+log.basicConfig(level=log.INFO)
 
 def _wrapif(self, key, value):
     if isinstance(value, dict):
@@ -30,7 +30,7 @@ class Wrapper(dict):
                 raise AttributeError()
 
     def __setattr__(self, key, value):
-        log.debug('__setattr__(%r, %r)'%(key, value))
+        log.debug('__setattr__(%s, %r)'%(key, value))
         if key in self:
             log.debug('self[%r] = %r'%(key, value))
             self[key] = value
@@ -42,6 +42,7 @@ class Wrapper(dict):
     def __getitem__(self, key):
         value = dict.__getitem__(self, key)
         log.debug('Wrapper.__getitem__(%r)'%key)
+        
         return self._wrapif(key, value)
 
     def items(self):
@@ -96,6 +97,7 @@ class ListWrapper(list):
 
     def __iter__(self):
         for n, item in enumerate(list.__iter__(self)):
+            log.debug('__iter__()',n,item)
             yield self._wrapif(n, item)
 
     def __repr__(self):

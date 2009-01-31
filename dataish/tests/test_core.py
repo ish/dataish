@@ -84,7 +84,6 @@ class TestOtherAttrs(unittest.TestCase):
         w = self.nesteddict_withseq
         r = [v for v in w.itervalues()]
         r.sort()
-        print r
         assert r[0] == 1
         assert r[1] == w['c']
         assert r[2] == w['b']
