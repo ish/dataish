@@ -1,0 +1,9 @@
+setup.cfg
+setup.py
+dataish/__init__.py
+dataish.egg-info/PKG-INFO
+dataish.egg-info/SOURCES.txt
+dataish.egg-info/dependency_links.txt
+dataish.egg-info/entry_points.txt
+dataish.egg-info/top_level.txt
+dataish.egg-info/zip-safe
