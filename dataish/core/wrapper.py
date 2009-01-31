@@ -66,6 +66,11 @@ class Wrapper(dict):
         del self[key]
         return v
 
+    def get(self, key):
+        v = dict.get(self,key)
+        log.debug('get(%s)'%key)
+        return self._wrapif(v)
+
     def popitem(self, key):
         v = self[key]
         log.debug('popitem(%s)'%key)
