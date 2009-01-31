@@ -56,15 +56,18 @@ class Wrapper(dict):
         log.debug('itervalues()')
         return (self[key] for key in self.keys())
 
+    def iteritems(self):
+        log.debug('iteritems()')
+        return ((key, self[key]) for key in self.keys())
+
     def __repr__(self):
         item = '%r: %r'
         return '❴%s❵'%(', '.join([item%(key, value) for key, value in self.items()]))
 
     def pop(self, key):
-        v = self[key]
+        v = dict.pop(self, key)
         log.debug('pop(%s)'%key)
-        del self[key]
-        return v
+        return self._wrapif(v)
 
     def get(self, key):
         v = dict.get(self,key)
@@ -72,9 +75,8 @@ class Wrapper(dict):
         return self._wrapif(v)
 
     def popitem(self, key):
-        v = self[key]
+        v = self.pop(key)
         log.debug('popitem(%s)'%key)
-        del self[key]
         return (key, v)
 
     def _wrapif(self, value):
