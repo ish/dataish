@@ -2,9 +2,9 @@
 import logging as log
 from dataish.core import wrapper
 
-log.basicConfig(level=log.INFO)
+log.basicConfig(level=log.DEBUG,)
 
-def _wrapif(self, key, value):
+def _wrapif(self, value):
     if isinstance(value, dict):
         log.debug('.. sWrapper(%r)'%value)
         return Wrapper(value, self.schema)
@@ -20,8 +20,8 @@ class Wrapper(wrapper.Wrapper):
         wrapper.Wrapper.__init__(self, value)
 
 
-    def _wrapif(self, key, value):
-        return _wrapif(self, key, value)
+    def _wrapif(self, value):
+        return _wrapif(self, value)
 
 
 class ListWrapper(wrapper.ListWrapper):
@@ -30,8 +30,5 @@ class ListWrapper(wrapper.ListWrapper):
         self.schema = schema
         wrapper.ListWrapper.__init__(self, value)
 
-    def _wrapif(self, key, value):
-        return _wrapif(self, key, value)
-
-
-
+    def _wrapif(self, value):
+        return _wrapif(self, value)

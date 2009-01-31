@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import logging as log
 
-log.basicConfig(level=log.DEBUG,)
+log.basicConfig(level=log.INFO,)
 
-def _wrapif(self, value):
+def _wrapif(self, key, value):
     if isinstance(value, dict):
         log.debug('.. Wrapper(%r)'%value)
         return Wrapper(value)
@@ -40,9 +40,9 @@ class Wrapper(dict):
 
 
     def __getitem__(self, key):
-        item = dict.__getitem__(self, key)
+        value = dict.__getitem__(self, key)
         log.debug('Wrapper.__getitem__(%r)'%key)
-        return self._wrapif(item)
+        return self._wrapif(key, value)
 
     def items(self):
         log.debug('items()')
@@ -65,22 +65,22 @@ class Wrapper(dict):
         return '❴%s❵'%(', '.join([item%(key, value) for key, value in self.items()]))
 
     def pop(self, key):
-        v = dict.pop(self, key)
+        value = dict.pop(self, key)
         log.debug('pop(%s)'%key)
-        return self._wrapif(v)
+        return self._wrapif(key, value)
 
     def get(self, key):
-        v = dict.get(self,key)
+        value = dict.get(self,key)
         log.debug('get(%s)'%key)
-        return self._wrapif(v)
+        return self._wrapif(key, value)
 
     def popitem(self, key):
         v = self.pop(key)
         log.debug('popitem(%s)'%key)
         return (key, v)
 
-    def _wrapif(self, value):
-        return _wrapif(self, value)
+    def _wrapif(self, key, value):
+        return _wrapif(self, key, value)
 
 
         
@@ -92,17 +92,17 @@ class ListWrapper(list):
     def __getitem__(self, key):
         log.debug('ListWrapper.__getitem__(self, %r)'%key)
         item = list.__getitem__(self, key)
-        return self._wrapif(item)
+        return self._wrapif(key, item)
 
     def __iter__(self):
-        for item in list.__iter__(self):
-            yield self._wrapif(item)
+        for n, item in enumerate(list.__iter__(self)):
+            yield self._wrapif(n, item)
 
     def __repr__(self):
         return '❲%s❳'%(', '.join('%r'%value for value in self))
 
-    def _wrapif(self, value):
-        return _wrapif(self, value)
+    def _wrapif(self, key, value):
+        return _wrapif(self, key, value)
 
 
 
