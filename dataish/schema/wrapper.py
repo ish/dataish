@@ -48,6 +48,9 @@ class ListWrapper(wrapper.ListWrapper):
         self.schema = schema
         wrapper.ListWrapper.__init__(self, value)
 
+    def validate(self):
+        return self.schema.validate(self)
+
     def _wrapif(self, key, value):
         return _wrapif(self, key, value)
 

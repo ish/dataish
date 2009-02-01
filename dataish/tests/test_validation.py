@@ -49,3 +49,23 @@ class TestBasic(unittest.TestCase):
 
 
 
+    def test_sublists(self):
+        d = {'a': 1, 'b': {'p':12,'q':13}, 'c': [{'x':25,'y': 26},{'x':None,'y': 26}]}
+        schema = sS(SI('a'),SS('b',[SI('p'),SI('q')]),SQ('c',sS(SI('x',validator=v.Required()),SI('y'))))
+        w = Wrapper(d, schema)
+        try:
+            w.validate()
+        except schemaish.Invalid, e:
+            assert e.message=='field "c.1.x" is required'
+
+        wc = w.c
+
+        try:
+            wc.validate()
+        except schemaish.Invalid, e:
+            print e.message
+            assert e.message=='field "1.x" is required'
+
+
+
+
