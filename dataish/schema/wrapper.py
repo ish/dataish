@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging as log
 from dataish.core import wrapper
+import validatish
+from convertish import converter
 
 log.basicConfig(level=log.DEBUG)
 
@@ -37,6 +39,9 @@ class Wrapper(wrapper.Wrapper):
     def validate(self):
         return self.schema.validate(self)
 
+    def convert(self, _from, _to):
+        log.debug('convert from %s to %s'%(_from, _to))
+        return converter(_from, _to).convert(self.schema, self)
 
     def _wrapif(self, key, value):
         return _wrapif(self, key, value)
@@ -50,6 +55,10 @@ class ListWrapper(wrapper.ListWrapper):
 
     def validate(self):
         return self.schema.validate(self)
+
+    def convert(self, _from, _to):
+        log.debug('convert from %s to %s'%(_from, _to))
+        return converter(_from, _to).convert(self.schema, self)
 
     def _wrapif(self, key, value):
         return _wrapif(self, key, value)
