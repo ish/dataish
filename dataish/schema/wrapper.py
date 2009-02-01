@@ -2,7 +2,8 @@
 import logging as log
 from dataish.core import wrapper
 
-log.basicConfig(level=log.INFO)
+log.basicConfig(level=log.DEBUG)
+
 
 def _get_sub_schema_by_key(schema, key):
     try:
@@ -32,6 +33,9 @@ class Wrapper(wrapper.Wrapper):
     def __init__(self, value, schema):
         self.schema = schema
         wrapper.Wrapper.__init__(self, value)
+
+    def validate(self):
+        return self.schema.validate(self)
 
 
     def _wrapif(self, key, value):
