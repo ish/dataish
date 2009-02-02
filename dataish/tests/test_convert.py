@@ -63,6 +63,17 @@ class TestBasic(unittest.TestCase):
         assert out == expected
 
 
+    def test_sublistnodata(self):
+        d = {'a': 1, 'b': {'p':12,'q':13}, 'c': []}
+        schema = sS(SI('a'),SS('b',[SI('p'),SI('q')]),SQ('c',sS(SI('x'),SD('y'))))
+        w = Wrapper(d, schema)
+        wc = w.c
+        out = wc.convert('python','json')
+        expected = []
+        assert out == expected
+        out = w.convert('python','json')
+        expected = {'a': 1, 'b': {'p': 12, 'q': 13}, 'c': expected}
+        assert out == expected
 
 
 
