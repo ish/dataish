@@ -43,6 +43,9 @@ class Wrapper(wrapper.Wrapper):
         log.debug('convert from %s to %s'%(_from, _to))
         return converter(_from, _to).convert(self.schema, self)
 
+    def form(self, name=None, action_url=None, errors=None, renderer=None):
+        f = form(self, self.schema, defaults=self, errors=None, action_url=None, renderer=None)
+
     def _wrapif(self, key, value):
         return _wrapif(self, key, value)
 
